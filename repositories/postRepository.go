@@ -121,3 +121,38 @@ func GetJobDetailsWithApplicants(companyID, jobID int) (*models.JobDetails, []mo
 
 	return &job, appliedUsers, nil
 }
+
+
+
+
+
+// GetNotifications fetches job application logs for a specific company
+func GetNotifications(companyID int) ([]models.JobApplicationLog, error) {
+	var logs []models.JobApplicationLog
+
+	query := `
+		SELECT id, user_id, job_id, company_id, job_title, user_name, profile_pic, applied_at
+		FROM job_applications_log 
+		WHERE company_id = ?
+		ORDER BY applied_at DESC
+	`
+
+	rows, err := config.DB.Query(query, companyID)
+	if err != nil {
+		return nil, fmt.Errorf("error fetching notifications: %v", err)
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var log models.JobApplicationLog
+		if err := rows.Scan(&log.ID, &log.UserID, &log.JobID, &log.CompanyID, &log.JobTitle, &log.UserName, &log.ProfilePic, &log.AppliedAt); err != nil {
+			return nil, fmt.Errorf("error scanning notification: %v", err)
+		}
+		logs = append(logs, log)
+	}
+	if(len(logs)==0){
+		return []models.JobApplicationLog{}, nil
+	}
+
+	return logs, nil
+}

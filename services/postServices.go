@@ -53,3 +53,8 @@ func GetJobsByCompanyID(companyID int) ([]models.Jobs, error) {
 func GetJobDetails(companyID, jobID int) (*models.JobDetails, []models.AppliedUser, error) {
 	return repositories.GetJobDetailsWithApplicants(companyID, jobID)
 }
+
+
+func GetCompanyNotifications(companyID int) ([]models.JobApplicationLog, error) {
+	return repositories.GetNotifications(companyID)
+}

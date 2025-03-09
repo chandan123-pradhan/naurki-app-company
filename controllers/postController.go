@@ -160,3 +160,32 @@ func GetJobDetailsHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+
+// GetNotificationsHandler fetches job application logs for a company
+func GetNotificationsHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract and validate Authorization token
+	authHeader := r.Header.Get("Authorization")
+	if authHeader == "" {
+		respondWithJSON(w, http.StatusUnauthorized, "Authorization token is required", nil)
+		return
+	}
+
+	tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+	companyID, err := utils.VerifyJWT(tokenString)
+	if err != nil {
+		respondWithJSON(w, http.StatusUnauthorized, err.Error(), nil)
+		return
+	}
+
+	// Fetch job application logs for the company
+	jobLogs, err := services.GetCompanyNotifications(companyID)
+	if err != nil {
+		respondWithJSON(w, http.StatusInternalServerError, err.Error(), nil)
+		return
+	}
+
+	// Success response
+	respondWithJSON(w, http.StatusOK, "Notifications fetched successfully", map[string]interface{}{
+		"notifications": jobLogs,
+	})
+}

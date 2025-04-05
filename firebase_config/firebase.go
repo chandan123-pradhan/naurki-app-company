@@ -20,7 +20,7 @@ func GetClient() *messaging.Client {
 func InitFirebase() {
     ctx := context.Background()
 
-    opt := option.WithCredentialsFile("firebase/serviceAccountKey.json")
+    opt := option.WithCredentialsFile("firebase_config/serviceAccountKey.json")
     app, err := firebase.NewApp(ctx, nil, opt)
     if err != nil {
         log.Fatalf("error initializing app: %v", err)

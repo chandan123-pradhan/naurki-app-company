@@ -20,6 +20,8 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/company/job_details", controllers.GetJobDetailsHandler).Methods("GET")
 	router.HandleFunc("/company/get-notifications",controllers.GetNotificationsHandler).Methods("GET")
 	router.HandleFunc("/company/get-alerts",controllers.GetAlerts).Methods("GET")
+	router.HandleFunc("/company/update-fcm",controllers.UpdateFcmToken).Methods("POST")
+	router.HandleFunc("/company/send-notification",controllers.SendNotification).Methods("POST")
 	router.PathPrefix("/uploads/").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
 
 

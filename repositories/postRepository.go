@@ -156,3 +156,5 @@ func GetNotifications(companyID int) ([]models.JobApplicationLog, error) {
 
 	return logs, nil
 }
+
+

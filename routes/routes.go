@@ -22,7 +22,20 @@ func InitializeRoutes() *mux.Router {
 	router.HandleFunc("/company/get-alerts",controllers.GetAlerts).Methods("GET")
 	router.HandleFunc("/company/update-fcm",controllers.UpdateFcmToken).Methods("POST")
 	router.HandleFunc("/company/send-notification",controllers.SendNotification).Methods("POST")
+    router.HandleFunc("/company/get_subscription_plan", controllers.GetSubscriptionPlanForCompanies).Methods("GET")
+	
+	router.HandleFunc("/company/payment_update", controllers.SubscriptionPayment).Methods("POST")
+	router.HandleFunc("/company/subsribe_plan", controllers.SubscribePlan).Methods("POST")	
+	router.HandleFunc("/company/check_subscription_status", controllers.CheckSubscriptionStatus).Methods("GET")		
 	router.PathPrefix("/uploads/").Handler(http.StripPrefix("/uploads/", http.FileServer(http.Dir("./uploads"))))
+
+
+
+
+	//Admins....
+
+	router.HandleFunc("/admin/add-plans",controllers.AddSubscriptionPlans).Methods("POST")
+    router.HandleFunc("/admin/get-plans",controllers.GetSubscriptionPlanForAdmin).Methods("GET")
 
 
 	// Add other routes for authentication or any other resources
